@@ -1,8 +1,8 @@
-const express=require('express');
-const cors=require('cors');
+const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
-const app=express();
-const port=process.env.PORT || 5000;
+const app = express();
+const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 
@@ -28,7 +28,17 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    //const toyCollection = client.db('toy-marketplace').collection('assault-rifles');
+    const toyCollection = client.db('toy-marketplace').collection('all-toys');
+
+    //show-20 toys(read operation)
+
+    app.get('/alltoys', async(req,res)=>{
+      //const query={subcategory:"Assault Rifle"}
+      const cursor=toyCollection.find();
+      const result= await cursor.limit(20).toArray();
+      res.send(result);
+    })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -41,10 +51,10 @@ run().catch(console.dir);
 
 
 
-app.get('/',(req,res)=>{
-    res.send('Server is runnng')
+app.get('/', (req, res) => {
+  res.send('Server is runnng')
 })
 
-app.listen(port,()=>{
-    console.log(`server is running at port ${port}`);
+app.listen(port, () => {
+  console.log(`server is running at port ${port}`);
 })
