@@ -38,27 +38,34 @@ async function run() {
     })
 
 
-    //get data by subcategory 
+    //get data by subcategory from collection
     app.get('/arCategory', async(req,res)=>{
       const query={subcategory :"Assault Rifle"};
       const cursor=toyCollection.find(query);
       const result= await cursor.limit(2).toArray();
       res.send(result);
     })
-
     app.get('/srCategory', async(req,res)=>{
       const query={subcategory :"Sniper Rifle"};
       const cursor=toyCollection.find(query);
       const result= await cursor.limit(2).toArray();
       res.send(result);
     })
-
     app.get('/smgCategory', async(req,res)=>{
       const query={subcategory :"Submachine Gun"};
       const cursor=toyCollection.find(query);
       const result= await cursor.limit(2).toArray();
       res.send(result);
     })
+
+
+    //add new document to the collection
+    app.post('/addToys', async(req,res)=>{
+      const newToy=req.body;
+      const result= await toyCollection.insertOne(newToy);
+      res.send(result);
+    })
+
 
 
 
