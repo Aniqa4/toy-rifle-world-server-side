@@ -7,7 +7,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 
 
 //middleware
-app.use(cors());
+app.use(cors())
 app.use(express.json());
 
 
@@ -26,18 +26,42 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    //await client.connect();
 
     const toyCollection = client.db('toy-marketplace').collection('all-toys');
 
-    //show-20 toys(read operation)
-
+    //get 20 documents from collection (read operation)
     app.get('/alltoys', async(req,res)=>{
-      //const query={subcategory:"Assault Rifle"}
       const cursor=toyCollection.find();
       const result= await cursor.limit(20).toArray();
       res.send(result);
     })
+
+
+    //get data by subcategory 
+    app.get('/arCategory', async(req,res)=>{
+      const query={subcategory :"Assault Rifle"};
+      const cursor=toyCollection.find(query);
+      const result= await cursor.limit(2).toArray();
+      res.send(result);
+    })
+
+    app.get('/srCategory', async(req,res)=>{
+      const query={subcategory :"Sniper Rifle"};
+      const cursor=toyCollection.find(query);
+      const result= await cursor.limit(2).toArray();
+      res.send(result);
+    })
+
+    app.get('/smgCategory', async(req,res)=>{
+      const query={subcategory :"Submachine Gun"};
+      const cursor=toyCollection.find(query);
+      const result= await cursor.limit(2).toArray();
+      res.send(result);
+    })
+
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
