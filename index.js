@@ -31,38 +31,45 @@ async function run() {
     const toyCollection = client.db('toy-marketplace').collection('all-toys');
 
     //get 20 documents from collection (read operation)
-    app.get('/alltoys', async(req,res)=>{
-      const cursor=toyCollection.find();
-      const result= await cursor.limit(20).toArray();
+    app.get('/alltoys', async (req, res) => {
+      const cursor = toyCollection.find();
+      const result = await cursor.limit(20).toArray();
       res.send(result);
     })
 
 
     //get data by subcategory from collection
-    app.get('/arCategory', async(req,res)=>{
-      const query={subcategory :"Assault Rifle"};
-      const cursor=toyCollection.find(query);
-      const result= await cursor.limit(2).toArray();
+    app.get('/arCategory', async (req, res) => {
+      const query = { subcategory: "Assault Rifle" };
+      const cursor = toyCollection.find(query);
+      const result = await cursor.limit(2).toArray();
       res.send(result);
     })
-    app.get('/srCategory', async(req,res)=>{
-      const query={subcategory :"Sniper Rifle"};
-      const cursor=toyCollection.find(query);
-      const result= await cursor.limit(2).toArray();
+    app.get('/srCategory', async (req, res) => {
+      const query = { subcategory: "Sniper Rifle" };
+      const cursor = toyCollection.find(query);
+      const result = await cursor.limit(2).toArray();
       res.send(result);
     })
-    app.get('/smgCategory', async(req,res)=>{
-      const query={subcategory :"Submachine Gun"};
-      const cursor=toyCollection.find(query);
-      const result= await cursor.limit(2).toArray();
+    app.get('/smgCategory', async (req, res) => {
+      const query = { subcategory: "Submachine Gun" };
+      const cursor = toyCollection.find(query);
+      const result = await cursor.limit(2).toArray();
+      res.send(result);
+    })
+
+    //get all data
+    app.get('/myToys', async (req, res) => {
+      const cursor = toyCollection.find();
+      const result = await cursor.toArray();
       res.send(result);
     })
 
 
-    //add new document to the collection
-    app.post('/addToys', async(req,res)=>{
-      const newToy=req.body;
-      const result= await toyCollection.insertOne(newToy);
+    //add new documents to the collection
+    app.post('/addToys', async (req, res) => {
+      const newToy = req.body;
+      const result = await toyCollection.insertOne(newToy);
       res.send(result);
     })
 
