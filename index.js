@@ -75,12 +75,31 @@ async function run() {
     })
 
 
-    /* //add new documents to the collection
+    //add new documents to the collection
     app.post('/addToys', async (req, res) => {
       const newToy = req.body;
       const result = await toyCollection.insertOne(newToy);
       res.send(result);
-    }) */
+    })
+
+
+    //update data
+    app.put('/myToys/:id', async (req,res)=>{
+      const id=req.params.id;
+      const filter= {_id:new ObjectId(id)};
+      const options ={upsert: true};
+      const updatedToy=req.body;
+      const newInfo={
+        $set:{
+          price:updatedToy.price,
+          availableQuantity:updatedToy.availableQuantity,
+          description:updatedToy.description
+        }
+      }
+      const result=await toyCollection.updateOne(filter, newInfo,options);
+      res.send(result);
+      
+    })
 
 
     //delete data from collection
