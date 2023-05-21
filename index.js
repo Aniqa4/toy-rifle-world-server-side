@@ -82,6 +82,15 @@ async function run() {
       res.send(result);
     })
 
+    //search by name
+    app.post('/searchedToys', async (req, res) => {
+      const searchQuery = req.body.toy;
+      const query = { name: { $regex: searchQuery, $options: 'i' } };
+      const results = await toyCollection.find(query).toArray();
+      res.json(results);
+    });
+
+
 
     //update data
     app.put('/myToys/:id', async (req,res)=>{
@@ -110,8 +119,6 @@ async function run() {
       const result = await toyCollection.deleteOne(query);
       res.send(result);
     })
-
-
 
 
 
